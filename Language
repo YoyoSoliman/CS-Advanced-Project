@@ -1,0 +1,112 @@
+# Import Module for tkinter
+from tkinter import *
+
+
+# create root window
+UI = Tk()
+
+# root window title and dimension
+UI.title("The Language Learning Game")
+
+
+# Set geometry (widthxheight)
+UI.geometry('900x900')
+
+
+def openTranslator(): # Functions for the Translator button that opens a new window
+
+def closeTran(): # for exit button to exit out of the translator
+
+tranWindow.destroy()
+
+
+# Toplevel object which will
+# be treated as a new window
+tranWindow = Toplevel(UI)
+
+# sets the title of the
+# Toplevel widget
+tranWindow.title("Translator")
+
+# sets the geometry of toplevel
+tranWindow.geometry("600x600")
+
+exit_button = Button(tranWindow, text="Exit", command=closeTran) # makes the exit button
+exit_button.pack(pady=20)
+
+askThem = Entry(tranWindow, width= 40) # creates the enrty box for the translator (Still in progress)
+askThem.focus_set()
+askThem.pack()
+
+def openQuiz(): # function for quiz window
+def closeQuiz(): #function to close out of Quiz
+quizWindow.destroy()
+
+
+# Toplevel object which will
+# be treated as a new window
+quizWindow = Toplevel(UI)
+
+# sets the title of the
+# Toplevel widget
+quizWindow.title("Quiz")
+
+# sets the geometry of toplevel
+quizWindow.geometry("600x600")
+
+exit_button = Button(quizWindow, text="Exit", command=closeQuiz) # exit button
+exit_button.pack(pady=20)
+
+def openRace(): # creates new window for Race
+
+def closeRace(): # to exit out of the race window
+raceWindow.destroy()
+
+# Toplevel object which will
+# be treated as a new window
+raceWindow = Toplevel(UI)
+
+# sets the title of the
+# Toplevel widget
+raceWindow.title("Race Game")
+
+# sets the geometry of toplevel
+raceWindow.geometry("600x600")
+
+exit_button = Button(raceWindow, text="Exit", command=closeRace) # exit window
+exit_button.pack(pady=20)
+
+def openCards(): # function to open the flash cards window
+
+def closeCards(): # function to exit out of flash card window
+cardsWindow.destroy()
+
+# Toplevel object which will
+# be treated as a new window
+cardsWindow = Toplevel(UI)
+
+# sets the title of the
+# Toplevel widget
+cardsWindow.title("Race Game")
+
+# sets the geometry of toplevel
+cardsWindow.geometry("600x600")
+
+exit_button = Button(cardsWindow, text="Exit", command=closeCards)# exit button
+exit_button.pack(pady=20)
+
+
+# all widgets will be here for the main starting page
+
+b1 = Button(UI, text = "Traslator", height=10, width=15, command=openTranslator) # for Translator button
+b2 = Button(UI, text = "MCQ Quiz", height=10, width=15, command=openQuiz)# for Quiz button
+b3 = Button(UI, text = "Race Game", height=10, width=15,command=openRace)# for Race Game button
+b4 = Button(UI, text = "Flash Cards", height=10, width=15,command=openCards)# for Flash Caeds button
+b1.place(x=500, y = 500)
+b2.place(x=630, y = 500)
+b3.place(x=630, y = 330)
+b4.place(x=500, y = 330)
+
+
+# Execute Tkinter
+UI.mainloop()
