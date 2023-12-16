@@ -1,0 +1,327 @@
+from googletrans import Translator
+from tkinter import *
+import tkinter as tk
+import random
+import pandas
+from threading import Timer
+
+
+important_words = [
+    "Hello",
+    "Goodbye",
+    "Yes",
+    "No",
+    "Please",
+    "Thank you",
+    "Excuse me",
+    "I'm sorry",
+    "What?",
+    "Where?",
+    "When?",
+    "Why?",
+    "How?",
+    "Who?",
+    "Name",
+    "Numbers",
+    "Colors",
+    "Time",
+    "Day",
+    "Week",
+    "Month",
+    "Year",
+    "Today",
+    "Tomorrow",
+    "Yesterday",
+    "Now",
+    "Here",
+    "There",
+    "Food",
+    "Water",
+    "Air",
+    "Family",
+    "Friend",
+    "Work",
+    "Home",
+    "Money",
+    "Health",
+    "Love",
+    "Happy",
+    "Sad",
+    "Angry",
+    "Beautiful",
+    "Ugly",
+    "Big",
+    "Small",
+    "Hot",
+    "Cold",
+    "Good",
+    "Bad",
+    "New",
+    "Old",
+    "Right",
+    "Wrong",
+    "Learn",
+    "Understand",
+    "Speak",
+    "Listen",
+    "Read",
+    "Write",
+    "Do",
+    "Don't",
+    "Help",
+    "Need",
+    "Want",
+    "Buy",
+    "Sell",
+    "Go",
+    "Come",
+    "Stop",
+    "Start",
+    "Finish",
+    "Open",
+    "Close",
+    "Meet",
+    "See",
+    "Touch",
+    "Feel",
+    "Think",
+    "Remember",
+    "Forget",
+    "Believe",
+    "Doubt",
+    "Happy",
+    "Sad",
+    "Surprised",
+    "Tired",
+    "Hungry",
+    "Thirsty",
+    "Good morning",
+    "Good afternoon",
+    "Good evening",
+    "Good night",
+]
+
+def openTranslator(): # Functions for the Translator button that opens a new window
+
+    
+    def closeTran(): # for exit button to exit out of the translator
+
+        tranWindow.destroy()
+
+    def translate_sentence():
+        translator = Translator()
+        result = translator.translate(askThem.get(), src="en", dest="es")
+        translated.delete(0, END)
+        translated.insert(0,result.text)
+    
+
+    # Toplevel object which will
+    # be treated as a new window
+    tranWindow = Toplevel(UI)
+
+     # sets the title of the
+     # Toplevel widget
+    tranWindow.title("Translator")
+
+    # sets the geometry of toplevel
+    tranWindow.geometry("600x600")
+
+    translate_button = Button(tranWindow, text="Translate", command=translate_sentence)
+    translate_button.pack(pady=20)
+    translate_button.place(x=100, y=100)
+
+    exit_button = Button(tranWindow, text="Exit", command=closeTran) # makes the exit button
+    exit_button.pack(pady=20)
+
+    askThem = Entry(tranWindow, width= 40) # creates the enrty box for the translator (Still in progress)
+    askThem.focus_set()
+    askThem.pack()
+
+    translated = Entry(tranWindow, width= 40) # creates the enrty box for the translator (Still in progress)
+    translated.focus_set()
+    translated.place(x=200, y=200)
+
+
+def openQuiz(): # function for quiz window
+    def closeQuiz(): #function to close out of Quiz
+        quizWindow.destroy()
+
+
+    # Toplevel object which will
+    # be treated as a new window
+    quizWindow = Toplevel(UI)
+
+    # sets the title of the
+    # Toplevel widget
+    quizWindow.title("Quiz")
+
+     # sets the geometry of toplevel
+    quizWindow.geometry("600x600")
+
+    exit_button = Button(quizWindow, text="Exit", command=closeQuiz) # exit button
+    exit_button.pack(pady=20)
+
+def openRace(): # creates new window for Race
+
+    def closeRace(): # to exit out of the race window
+        raceWindow.destroy()
+
+    def getNew():
+        spanish_word = translator.translate(random.choice(important_words), dest = "es", src = "en")
+        canvas.itemconfig(word_to_translate, text = spanish_word.text, fill = "black")
+        Timer(10, addBotCounter())
+    
+    def checkEntry():
+        txt = canvas.itemcget(word_to_translate, 'text')
+        if translator.translate(txt, dest = "en", src = "es").text == input.get():
+            addCounter()
+            getNew()
+
+    def addCounter():
+        count = int(canvas.itemcget(counter, 'text'))
+        count += 1
+        newCount = str(count)
+        canvas.itemconfig(counter, text = newCount, fill = 'black')
+
+    def addBotCounter():
+        bot_count = int(canvas.itemcget(bot_counter, "text"))
+        bot_count += 1
+        newCount = str(bot_count)
+        canvas.itemconfig(bot_counter, text = newCount, fill = "black")
+        Timer(random.randint(1,9), addBotCounter).start()
+        
+
+
+    # Toplevel object which will
+    # be treated as a new window
+    raceWindow = Toplevel(UI)
+
+    # sets the title of the
+    # Toplevel widget
+    raceWindow.title("Race Game")
+
+     # sets the geometry of toplevel
+    raceWindow.geometry("1200x1200")
+
+    exit_button = Button(raceWindow, text="Exit", command=closeRace) # exit window
+    exit_button.pack(pady=20)
+
+    input = Entry(raceWindow, width= 40)
+    input.focus_set()
+    input.place(x=100, y=100)
+
+    enter_button = Button(raceWindow, text='Enter', command=checkEntry)
+    enter_button.pack(pady=20)
+    enter_button.place(x=100, y = 140)
+
+
+    canvas = tk.Canvas(raceWindow, bg='white')
+    canvas.place(x=400, y=200)
+    canvas.create_rectangle(600, 50, 800, 400)
+
+    counter = canvas.create_text(300, 50 ,text = "0", font=('Helvetica 15 bold'))
+    bot_counter = canvas.create_text(200, 50 ,text = "-1", font=('Helvetica 15 bold'))
+
+    word_to_translate = canvas.create_text(300, 100, text="", fill="black", font=('Helvetica 15 bold'))
+    getNew()
+
+
+def openCards(): # function to open the flash cards window
+   # current_card = ""
+    language = ["en"]
+   
+    def turn_spanish():
+        language.clear()
+        language.append("es")
+
+    def turn_english():
+        language.clear()
+        language.append("en")
+    
+
+    def next_card():
+        global current_card 
+        turn_english()
+        current_card = random.choice(important_words)
+        canvas.itemconfig(card_title, text="English", fill="black")
+        canvas.itemconfig(card_word, text=current_card, fill="black")
+    
+    def flip():
+        global current_card 
+        if "en" in language:
+            canvas.itemconfig(card_title, text="Spanish", fill = 'black')  
+            canvas.itemconfig(card_word, text= translator.translate(current_card, dest= "es", src="en" ).text, fill = "black")
+            turn_spanish()
+        else:
+            canvas.itemconfig(card_title, text="English", fill = 'black')  
+            canvas.itemconfig(card_word, text=current_card, fill="black")
+            turn_english()
+
+
+
+    def closeCards(): # function to exit out of flash card window
+        cardsWindow.destroy()
+
+
+    # Toplevel object which will
+    # be treated as a new window
+    cardsWindow = Toplevel(UI)
+
+    # sets the title of the
+    # Toplevel widget
+    cardsWindow.title("Flash Cards")
+
+     # sets the geometry of toplevel
+    cardsWindow.geometry("1400x1400")
+
+    
+
+    exit_button = Button(cardsWindow, text="Exit", command=closeCards)# exit button
+    exit_button.pack(pady=20)
+
+    next_button = Button(cardsWindow, text="Next", command=next_card)
+    next_button.pack(pady=20)
+
+    flip_button = Button(cardsWindow, text="flip", command=flip)
+    flip_button.pack(pady=20)
+
+
+    canvas = tk.Canvas(cardsWindow, bg='white')
+    canvas.pack(expand=tk.YES, fill=tk.BOTH)
+
+    canvas.create_rectangle(200, 50, 600, 400)
+
+   
+    
+    card_title = canvas.create_text(350, 100, text="", fill="black", font=('Helvetica 15 bold'))
+    card_word = canvas.create_text(350, 170, text="", fill="black", font=('Helvetica 15 bold'))
+    next_card() 
+
+
+
+# all widgets will be here for the main starting page
+
+translator=Translator()
+
+# create root window
+UI = Tk()
+
+# root window title and dimension
+UI.title("The Language Learning Game")
+
+
+# Set geometry (widthxheight)
+UI.geometry('900x900')
+current_card = ''
+b1 = Button(UI, text = "Traslator", height=10, width=15, command=openTranslator) # for Translator button
+b2 = Button(UI, text = "MCQ Quiz", height=10, width=15, command=openQuiz)# for Quiz button
+b3 = Button(UI, text = "Race Game", height=10, width=15,command=openRace)# for Race Game button
+b4 = Button(UI, text = "Flash Cards", height=10, width=15,command=openCards)# for Flash Caeds button
+b1.place(x=500, y = 500)
+b2.place(x=630, y = 500)
+b3.place(x=630, y = 330)
+b4.place(x=500, y = 330)
+
+
+# Execute Tkinter
+UI.mainloop()
